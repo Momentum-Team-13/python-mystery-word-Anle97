@@ -1,33 +1,39 @@
 import random
 
-# Generates a random word from the list
-def generate_word(text):
-    random_word = random.choice(text)
-    print('WELCOME TO MYSTERY WORD! The computer has selected a random word.\n')
-    print('Can you guess a letter in the word? \n ')
-    return random_word  
+#Reads in the file and selects a random word
+with open("words.txt") as file:
+    read_file = file.read()
+    read_file_list = read_file.split()
+    random_word = random.choice(read_file_list)
 
-# Displays the word to unveil
-def display_word(text):
-    word_to_unveil = str('_ '*len(text))
-    print(word_to_unveil)
-    return word_to_unveil
+    print("WELCOME TO THE MYSTERY WORD GAME. The computer has generated a word!\n")
+    word_to_unveil = list('_'*len(random_word))
+    print(random_word)
+    print(' '.join(word_to_unveil))
 
-def user_guess(text):
-    guess = input()    
+#Function to ask for an input
+def guess_letter(text):
+    while True:
+        guess = input("\nCan you guess a letter in the word?\n")
+        # if guess.isdigit() != True:
+        #     break
+        # print("\nSorry, no numbers!")
+        if len(guess) == 1:
+            break
+        print("\nSorry, only 1 character at a time.")
+    return guess
 
+#Function to play the game
 def play_game():
-    #Reads in the text as a list
-    with open("words.txt") as file:
-        read_file = file.read()
-        read_file_list = read_file.split()
-    # Generate random word
-    random_word = generate_word(read_file_list)
-    # Display word to unveil
-    word_to_guess = display_word(random_word)
     # Asks user for input of a letter
-    user_guess(word_to_guess)
-
+    user_guess = guess_letter(random_word)
+    for index, letter in enumerate(random_word):
+        if letter == user_guess:
+            word_to_unveil[index] = user_guess
+            print(' '.join(word_to_unveil))
+    if user_guess not in random_word:
+            print("nope!")
+    play_game()
 
 if __name__ == "__main__":
     play_game()
