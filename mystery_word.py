@@ -6,6 +6,7 @@ with open("words.txt") as file:
     read_file_list = read_file.split()
     random_word = random.choice(read_file_list)
 
+    print(random_word)
     print(f'WELCOME TO THE MYSTERY WORD GAME.')
     print(f'The computer has generated a word with {len(random_word)} letters. You have 8 tries to guess it!\n')
     word_to_unveil = list('_'*len(random_word))
@@ -23,9 +24,10 @@ def guess_letter(text):
 #Function to play the game
 def play_game():
     already_guessed = []
-    user_guess = guess_letter(random_word)
+    turns = 0
 
-    while len(already_guessed) < 8:
+    while turns < 8:
+        user_guess = guess_letter(random_word)
         #checks to see if word is filled in
         if ''.join(word_to_unveil) == random_word:
             print("Congrats, you've won! You filled the word in correctly.")
@@ -33,17 +35,18 @@ def play_game():
         #checks to see if guess is in the word
         for index, letter in enumerate(random_word):
             if letter == user_guess:
+                already_guessed.append(user_guess)
                 word_to_unveil[index] = user_guess
                 print(f'{user_guess} is in the word!')
         #checks to see if guess is not in the word/already guessed
-        if user_guess not in random_word or already_guessed:
+        if user_guess not in already_guessed:
             already_guessed.append(user_guess)
             print(f'\n{user_guess} is not in the word.')
-            print(f'You have {8-len(already_guessed)} turns left!')
+            turns += 1
+            print(f'You have {8-turns} turns left!')
         #lets user know if guess has been guessed
         elif user_guess in already_guessed:
             print(f'You already guessed {user_guess}')
-
         print(' '.join(word_to_unveil))
     print(f'The word was {random_word}.')
 
