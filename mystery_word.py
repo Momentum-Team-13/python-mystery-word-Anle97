@@ -1,4 +1,5 @@
 import random
+from re import U
 
 #Reads in the file and selects a random word
 with open("words.txt") as file:
@@ -28,10 +29,6 @@ def play_game():
 
     while turns < 8:
         user_guess = guess_letter(random_word)
-        #checks to see if word is filled in
-        if ''.join(word_to_unveil) == random_word:
-            print("Congrats, you've won! You filled the word in correctly.")
-            break
         #checks to see if guess is in the word
         for index, letter in enumerate(random_word):
             if letter == user_guess:
@@ -45,9 +42,13 @@ def play_game():
             turns += 1
             print(f'You have {8-turns} turns left!')
         #lets user know if guess has been guessed
-        elif user_guess in already_guessed:
+        if user_guess in already_guessed:
             print(f'You already guessed {user_guess}')
         print(' '.join(word_to_unveil))
+                #checks to see if word is filled in
+        if ''.join(word_to_unveil) == random_word:
+            print("Congrats, you've won! You filled the word in correctly.")
+            break
     print(f'The word was {random_word}.')
 
 
